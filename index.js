@@ -1,4 +1,5 @@
-const http = require('http')
+const express = require('express')
+const app = express()
 
 let persons = [
     {
@@ -33,11 +34,25 @@ let persons = [
       }
 ]
 
-const app = http.createServer((request, response) => {
-    response.writeHead(200, { 'Content-Type': 'application/json' })
-    response.end(JSON.stringify(persons))
+app.use(express.json())
+
+app.get('/', (request, response) => {
+    response.send('<h1>Hello this is the Phonebook!</h1>')
+})
+  
+app.get('/api/persons', (request, response) => {
+    response.json(persons)
+})
+
+app.get('/info', (request, response) => {
+    const numPeople = persons.length
+    const date = new Date()
+
+    response.send(`<p>Phonebook has info for ${numPeople} people</p>
+                    <p>${date.toString()}</p>`)
 })
 
 const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})
