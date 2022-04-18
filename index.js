@@ -53,6 +53,18 @@ app.post('/api/persons', (request, response) => {
         error: 'content missing' 
       })
     }
+    let found = false;
+    persons.map(p => {
+        if(p.name === body.name) {
+            found = true;
+        }
+    })
+
+    if(found) {
+        return response.status(400).json({ 
+            error: 'name must be unique' 
+        })
+    }
 
     const maxId = Math.floor(Math.random() * Date.now())
 
