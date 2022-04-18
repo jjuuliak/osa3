@@ -44,6 +44,26 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.post('/api/persons', (request, response) => {
+
+    const body = request.body
+
+    if (!body.number || !body.name) {
+      return response.status(400).json({ 
+        error: 'content missing' 
+      })
+    }
+
+    const maxId = Math.floor(Math.random() * Date.now())
+
+    const person = body
+    person.id = maxId + 1
+
+    persons = persons.concat(person)
+
+    response.json(person)
+})
+
 app.get('/info', (request, response) => {
     const numPeople = persons.length
     const date = new Date()
